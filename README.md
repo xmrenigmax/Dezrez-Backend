@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+src/
+├── app/
+│   └── api/                  # ROUTES (Entry points only)
+│       └── auth/
+│           ├── register/
+│           │   └── route.ts
+│           ├── login/
+│           │   └── route.ts
+│           └── 2fa/
+│               └── route.ts
+├── controllers/              # CONTROLLERS (Request/Response handling)
+│   └── authController.ts
+├── services/                 # SERVICES (Business Logic, Hashing, DB calls)
+│   └── authService.ts
+├── models/                   # DATABASE SCHEMAS
+│   └── User.ts
+├── middleware/               # MIDDLEWARE (Security checks)
+│   └── authMiddleware.ts
+├── lib/                      # UTILS (DB Connect, Helpers)
+│   └── dbConnect.ts
+└── util/                     # UTILS (Shared helper functions)
+    └── security.ts           # Hashing & Token logic
 
-## Getting Started
 
-First, run the development server:
+📦 4. Is this "Full-Fledged" yet?
+To reach your goal, we are missing a few critical pieces of the "Phase 1" roadmap:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Vapi Assistant Config: You have the webhook code, but you need a script or UI to actually create the assistant on Vapi's servers so it knows to call your /api/vapi/webhook.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+RAG Limitation: In your dezrez.ts, I've added a .take(3) limit. This is crucial because over-stuffing the assistant with listing data can degrade voice performance.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+DezRez API Keys: You'll need to set DEZREZ_API_KEY and VAPI_WEBHOOK_SECRET in your .env.local to actually see data flow.
