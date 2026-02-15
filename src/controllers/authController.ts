@@ -33,18 +33,21 @@ export async function loginUser(req: NextRequest) {
     const { email, password } = await req.json();
     const user = await User.findOne({ email }).select('+password +role');
 
-    if (!user || !(await AuthService.verifyPassword(password, user.password))) {
+    if (_.isNil(user) || !(await AuthService.verifyPassword(password, user.password))) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }
 
     const token = AuthService.generateToken(user._id, user.role);
 
     return NextResponse.json({
-      message: 'Login successful',
-      token,
-      role: user.role
+      token: token,
+      user: {
+        id: user._id.toString(),
+        email: user.email,
+        role: user.role
+      }
     }, { status: 200 });
-  } catch (error: any) {
+  } catch(error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

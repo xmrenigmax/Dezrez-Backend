@@ -5,7 +5,11 @@ import User from '@/models/User';
 import _ from 'lodash';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-key';
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (_.isNil(JWT_SECRET)) {
+  throw new Error('FATAL: JWT_SECRET environment variable is missing.');
+}
 
 // 1. Password Hashing
 export async function hashPassword(plainText: string) {
@@ -41,7 +45,7 @@ export function verify2FAToken(token: string, secret: string) {
 export function generateToken(userId: string, role: string) {
   return jwt.sign(
     { userId, role },
-    JWT_SECRET,
+    JWT_SECRET as string,
     { expiresIn: '1d' } // Token expires in 1 day
   );
 }
